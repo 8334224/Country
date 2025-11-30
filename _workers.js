@@ -1897,7 +1897,7 @@ async function saveTokenConfig() {
           resolveOverride: ip
         },
         // 设置较短的超时时间
-        signal: AbortSignal.timeout(5000)
+        signal: AbortSignal.timeout(3000)
       });
       
       if (!response.ok) {
