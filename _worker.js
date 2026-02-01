@@ -152,11 +152,12 @@ async function handleRawRequest(regionStr, format, limit = 0, requestUrl = null)
 
         for (const item of selectedItems) {
             const { line, code, ipPort } = item;
+            
+            const flag = getFlagEmoji(code);
+            const name = REGION_MAP[code] || code;
 
             if (isCFStyle) {
                 regionCounters[code] = (regionCounters[code] || 0) + 1;
-                const flag = getFlagEmoji(code);
-                const name = REGION_MAP[code] || code;
                 const countStr = toSuperScript(regionCounters[code]);
                 const port = ipPort.split(':')[1] || ''; 
                 
@@ -165,7 +166,7 @@ async function handleRawRequest(regionStr, format, limit = 0, requestUrl = null)
                 
                 processed.push(`${ipPort}#${nodeName}`);
             } else {
-                processed.push(ipPort);
+                processed.push(`${ipPort}#${flag} ${name} ${ipPort}`);
             }
         }
 
@@ -338,7 +339,7 @@ class="flex items-center gap-3 px-4 py-2 rounded-2xl bg-gradient-to-r from-gray-
             <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 p-2" id="regionGrid"><div class="col-span-full py-10 text-center animate-pulse text-slate-400">正在同步全球数据源...</div></div>
             <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
               <button onclick="autoRun('cf_comma_short')" class="btn-matrix h-16 text-lg font-bold flex items-center justify-center gap-3 cursor-pointer"><i data-lucide="terminal-square" class="w-6 h-6"></i><span>CFnew</span></button>
-              <button onclick="autoRun('line')" class="btn-racing h-16 text-xl flex items-center justify-center gap-3 cursor-pointer"><i data-lucide="zap" class="w-6 h-6"></i><span>edgetunnel</span></button>
+              <button onclick="autoRun('cf_line_short')" class="btn-racing h-16 text-xl flex items-center justify-center gap-3 cursor-pointer"><i data-lucide="zap" class="w-6 h-6"></i><span>edgetunnel</span></button>
             </div>
             <div id="loadingState" class="hidden text-center py-4 text-slate-500 animate-pulse text-sm mt-2"><i data-lucide="loader-2" class="animate-spin inline mr-2"></i> 正在从全球边缘节点提取数据...</div>
         </div>
@@ -357,11 +358,11 @@ class="flex items-center gap-3 px-4 py-2 rounded-2xl bg-gradient-to-r from-gray-
                     <button onclick="copy()" class="flex-1 sm:flex-none bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg font-bold text-xs hover:bg-slate-50 dark:hover:bg-slate-600 transition flex items-center justify-center gap-2 shadow-sm"><i data-lucide="copy" size="14"></i> 复制全部</button>
                     
                     <div class="relative group z-20 flex-1 sm:flex-none">
-                        <button id="linkBtn" onclick="toggleLinkMenu(event)" class="w-full sm:w-auto bg-slate-900 dark:bg-blue-600 text-white px-5 py-2 rounded-lg font-bold text-xs hover:opacity-80 transition flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20"><i data-lucide="link" size="14"></i> 更新地址</button>
+                        <button id="linkBtn" onclick="toggleLinkMenu(event)" class="w-full sm:w-auto bg-slate-900 dark:bg-blue-600 text-white px-5 py-2 rounded-lg font-bold text-xs hover:opacity-80 transition flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20"><i data-lucide="link" size="14"></i> API 地址</button>
                         
                         <div id="linkMenu" class="link-menu absolute top-full left-1/2 w-48 pt-4 z-50">
                             <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-xl shadow-2xl p-2 flex flex-col gap-2 ring-1 ring-black/5">
-                                <div class="text-[10px] text-center text-slate-400 font-bold uppercase tracking-wider py-1">选择订阅格式</div>
+                                <div class="text-[10px] text-center text-slate-400 font-bold uppercase tracking-wider py-1">选择 API 使用项目</div>
                                 <button onclick="generateLink('CFnew')" class="btn-matrix h-10 text-xs flex items-center justify-center gap-2 w-full">
                                     <span>CFnew</span>
                                 </button>
